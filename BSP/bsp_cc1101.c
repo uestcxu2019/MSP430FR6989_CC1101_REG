@@ -110,6 +110,9 @@ void CC1101_Init(void)
 	Write_Data(FOCCFG,0x1D);            //频率偏移补偿配置。必须配置
 
 
+	//地址匹配
+	//开启地址滤波
+	Write_Data(PKTCTRL1,0x01);
 	//发送输出功率配置
 	Write_Data(PATABLE,0x60);			//输出功率控制(如若不配置则采用默认输出功率)
 }
@@ -128,10 +131,10 @@ void WriteTxFITO(uint8_t * pBuffer,uint8_t len)
 		*	2.可选发送地址字节(是否做地址识别),如果开启了地址识别,则发送的数据长度是 地址长度 + 数据长度
 	*/
 	//第一步:发送数据的长度(如果地址识别开启,则长度+1)
-	Write_Data(WRITE_SINGLE_FIFO,len);			//发送长度字节,长度字节不能写在要发送的数据的数组里
+	Write_Data(WRITE_SINGLE_FIFO,len+1);			//发送长度字节,长度字节不能写在要发送的数据的数组里
 
 	//第二步:可选发送地址字节
-//	Write_Data(WRITE_BURST_FIFO,CC1101_UNIQUE_ADDR);			//可选发送地址字节,设置地址为0x02
+	Write_Data(WRITE_BURST_FIFO,CC1101_UNIQUE_ADDR);			//可选发送地址字节,设置地址为0x02
 
 	//第三步:发送数据
 	Write_burst(WRITE_BURST_FIFO,pBuffer,len);

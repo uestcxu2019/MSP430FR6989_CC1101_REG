@@ -18,6 +18,8 @@
  *	IDLE：空闲状态
 */
 
+//定义唯一一个地址ID
+#define	CC1101_UNIQUE_ADDR		0xAB
 
 //定义写入或读取方式
 #define		WRITE_SINGLE		0x00						//单字节写入
